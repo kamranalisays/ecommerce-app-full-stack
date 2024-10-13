@@ -1,11 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
+import {BrowserRouter  , Routes , Route, Navigate} from 'react-router-dom';
+import Products from './components/ProductComponent/Products';
+
+
+
+const  App = () =>  {
   return (
-    <div className="App">
-     <h1> react app </h1>
-    </div>
+  <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<Products />}  /> 
+      <Route path='*' element={<Navigate to='/' />} />
+    </Routes>
+  </BrowserRouter>
   );
 }
 
