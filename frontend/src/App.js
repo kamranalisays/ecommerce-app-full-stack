@@ -1,18 +1,12 @@
 import React from 'react';
-
-import {BrowserRouter  , Routes , Route, Navigate} from 'react-router-dom';
-import Products from './components/ProductComponent/Products';
-
+import Layout from './components/Layout/Layout';
 
 
 const  App = () =>  {
   return (
-  <BrowserRouter>
-    <Routes>
-      <Route path='/' element={<Products />}  /> 
-      <Route path='*' element={<Navigate to='/' />} />
-    </Routes>
-  </BrowserRouter>
+    <> 
+    <Layout>  <h1> Layout </h1> </Layout>
+   </>
   );
 }
 
