@@ -4,7 +4,8 @@ install node js
 2) npm install react-router-dom@6
 3) Adding bootstrap urls
 4) importing google font APIs
-
+5) npm install react-icons
+6) npm install emoji-dictionary
 
 -------------------------------------
 

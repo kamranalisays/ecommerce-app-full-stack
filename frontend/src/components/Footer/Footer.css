@@ -1,0 +1,24 @@
+
+
+.footer{
+    color:white;
+    background: black;
+    width: 100vw;
+    padding: 10px;
+
+}
+
+.footer a{
+
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+
+}
+
+
+.footer a:hover{
+
+    color: aqua;
+    border: 1px solid;
+}

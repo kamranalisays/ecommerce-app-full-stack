@@ -1,11 +1,21 @@
-import React from 'react'
+import React from 'react' ;
+import { Link } from 'react-router-dom';
+
+import './Footer.css';  
 
 function Footer() {
   return (
-    <div className='bg-dark text-light p-3'>
-        <h4 className='text-center'> 
+    <div className='footer'>
+        <h1 className='text-center'> 
             All Right Reseverd &copy; Kamran Ali 
-        </h4> 
+        </h1> 
+        <p className='text-center mt-3'>
+            <Link to="/about"> About </Link>
+          |
+          <Link to="/contact"> Contact </Link>
+          |
+          <Link to="/policy"> Privacy Policy </Link>
+        </p>
     </div>
   ) ;
 }
