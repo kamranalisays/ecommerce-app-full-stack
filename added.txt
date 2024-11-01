@@ -1,4 +1,26 @@
 install node js 
+
+
+Backend
+----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+frontend
+
 -------------------------------------
 1) npx create-react-app frontend
 2) npm install react-router-dom@6
