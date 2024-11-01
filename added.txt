@@ -3,8 +3,9 @@ install node js
 
 Backend
 ----------------------------------------------
-
-
+npm init  -y
+npm i express
+npm i colors
 
 
 
