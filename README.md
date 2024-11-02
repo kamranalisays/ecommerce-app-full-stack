@@ -31,7 +31,7 @@ install node js
 1.  ES+7 Code Snippets
 2.  prettier code formatter
 3.  JavaScript es6 code Snippets
-4.  Github copilot
+4.  IntelliCode
 
 ---
 
