@@ -6,8 +6,10 @@ Backend
 npm init  -y
 npm i express
 npm i colors
-
-
+npm i nodemon
+npm i dotenv
+npm i morgan
+npm i mongoose
 
 
 
