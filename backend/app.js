@@ -20,10 +20,13 @@ dotenv.config();
 const app = express();
 
 // middlesware
-app.use(express.json);
+app.use(express.json());
 app.use(morgan("dev"));
 
 //rest api
+
+app.use("/api/v1", userRoutes);
+
 app.get("/", (req, res) => {
   res.send({ message: " Ecommerce Application ..!" });
 });

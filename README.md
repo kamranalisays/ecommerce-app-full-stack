@@ -14,6 +14,7 @@ install node js
 5. npm i dotenv
 6. npm i morgan
 7. npm i mongoose
+8. npm i bcrypt
 
 # frontend
 
