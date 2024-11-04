@@ -15,6 +15,7 @@ install node js
 6. npm i morgan
 7. npm i mongoose
 8. npm i bcrypt
+9. npm i jsonwebtoken
 
 # frontend
 
@@ -41,3 +42,7 @@ install node js
 ---
 
 react developer tools chrome extension
+
+# sites
+
+https://www.npmjs.com/
