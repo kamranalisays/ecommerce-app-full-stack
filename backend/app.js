@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 
 //rest api
 
-app.use("/api/v1", userRoutes);
+app.use("/api/user", userRoutes);
 
 app.get("/", (req, res) => {
   res.send({ message: " Ecommerce Application ..!" });
