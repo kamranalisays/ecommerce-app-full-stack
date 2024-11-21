@@ -1,5 +1,4 @@
 import express from "express";
-import colors from "colors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 
@@ -8,8 +7,9 @@ import connectDB from "./config/db.js";
 
 //routes
 import userRoutes from "./routes/UserRoutes.js";
+import OrderRoutes from "./routes/OrderRoutes.js";
 
-// config
+//  load environment variables from a .env file into your application's process.env object.
 dotenv.config();
 
 // models
@@ -21,11 +21,12 @@ const app = express();
 
 // middlesware
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(morgan("dev")); // use for loggging in development mode
 
 //rest api
 
 app.use("/api/user", userRoutes);
+app.use("/api/order", OrderRoutes);
 
 app.get("/", (req, res) => {
   res.send({ message: " Ecommerce Application ..!" });
