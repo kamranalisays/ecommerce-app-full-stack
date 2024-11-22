@@ -1,4 +1,4 @@
-import userModel from "../models/userModel.js";
+import User from "../models/User.js";
 import authUtils from "../utils/authUtils.js";
 import JWT from "jsonwebtoken";
 
@@ -6,7 +6,7 @@ const userRegister = async (req, res) => {
   try {
     const { name, email, password, phone, address } = req.body;
 
-    const existingUser = await userModel.findOne({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(200).send({
         sucess: true,
@@ -15,7 +15,7 @@ const userRegister = async (req, res) => {
     }
     const hashedPassword = await authUtils.hashPassword(password);
 
-    const user = await userModel({
+    const user = await User({
       name,
       email,
       password: hashedPassword,
@@ -49,7 +49,7 @@ const userLogin = async (req, res) => {
       });
     }
 
-    const user = await userModel.findOne({ email });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).send({
