@@ -1,6 +1,8 @@
 import User from "../models/User.js";
-import authUtils from "../utils/authUtils.js";
+import authUtils from "../utils/AuthUtils.js";
 import JWT from "jsonwebtoken";
+import Messages from "../utils/messages.js";
+import Codes from "../utils/Codes.js";
 
 const userRegister = async (req, res) => {
   try {
@@ -10,7 +12,7 @@ const userRegister = async (req, res) => {
     if (existingUser) {
       return res.status(200).send({
         sucess: true,
-        message: "User already exists",
+        message: Messages.USER_ALREAD_EXISTS,
       });
     }
     const hashedPassword = await authUtils.hashPassword(password);
@@ -25,7 +27,7 @@ const userRegister = async (req, res) => {
 
     res.status(201).send({
       success: true,
-      message: "User created successfully",
+      message: Messages.USER_REGISTERED_SUCCESSFULLY,
       user,
     });
   } catch (error) {
@@ -45,7 +47,7 @@ const userLogin = async (req, res) => {
     if (!email || !password) {
       return res.status(404).send({
         sucess: false,
-        message: "Invalid email and password",
+        message: Messages.INVALID_EMAIL_AND_PASSWORD,
       });
     }
 
@@ -54,33 +56,33 @@ const userLogin = async (req, res) => {
     if (!user) {
       return res.status(404).send({
         sucess: false,
-        message: "Email NO Registered..!",
+        message: Messages.EMAIL_NOT_REGISTERED,
       });
     }
     const passMatch = await authUtils.comparePassword(password, user.password);
     if (!passMatch) {
       return res.status(200).send({
         sucess: false,
-        message: "Invalid password",
+        message: Messages.INVALID_PASSWORD,
       });
     }
 
     //
     const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "2d",
+      expiresIn: "10m",
     });
 
     return res.status(200).send({
       sucess: true,
-      message: "Login Successfully",
+      message: Messages.MESSAGE_LOGIN_SUCCESSFULLY,
       user,
       token,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send({
+    res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
       sucess: false,
-      message: "Error in Login",
+      message: Messages.INTERNAL_SERVER_ERROR_LOGIN,
       error,
     });
   }

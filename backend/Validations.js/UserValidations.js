@@ -1,17 +1,19 @@
-const UserRegisterValidator = (req, res, next) => {
+import messages from "../utils/messages.js";
+
+const userRegisterValidator = (req, res, next) => {
   const { name, email, password, phone, address } = req.body;
 
   if (name == null) {
-    return res.send({ error: "Name is required" });
+    return res.send({ error: messages.EMAIL_REQUIRED });
   }
   if (email == null) {
-    return res.send({ error: "email is required" });
+    return res.send({ error: messages.EMAIL_REQUIRED });
   }
   if (password == null) {
-    return res.send({ error: "password is required" });
+    return res.send({ error: messages.PASSWORD_REQUIRED });
   }
   if (phone == null) {
-    return res.send({ error: "phone is required" });
+    return res.send({ error: "Phone is required" });
   }
   if (address == null) {
     return res.send({ error: "address is required" });
@@ -19,4 +21,4 @@ const UserRegisterValidator = (req, res, next) => {
   next();
 };
 
-export default { UserRegisterValidator };
+export default { userRegisterValidator };

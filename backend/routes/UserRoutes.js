@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post(
   "/register",
-  UserValidations.UserRegisterValidator, // this will be called first
+  UserValidations.userRegisterValidator, // this will be called first
   UserController.userRegister // this will be called after the validation
 );
 
