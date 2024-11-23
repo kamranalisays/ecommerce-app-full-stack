@@ -3,6 +3,7 @@ import authUtils from "../utils/AuthUtils.js";
 import JWT from "jsonwebtoken";
 import Messages from "../utils/messages.js";
 import Codes from "../utils/Codes.js";
+import CONSTANTS from "../utils/constants.js";
 
 const userRegister = async (req, res) => {
   try {
@@ -10,8 +11,8 @@ const userRegister = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(200).send({
-        sucess: true,
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
         message: Messages.USER_ALREAD_EXISTS,
       });
     }
@@ -25,15 +26,15 @@ const userRegister = async (req, res) => {
       address,
     }).save();
 
-    res.status(201).send({
-      success: true,
+    res.status(Codes.CREATED_201).send({
+      [CONSTANTS.success]: true,
       message: Messages.USER_REGISTERED_SUCCESSFULLY,
       user,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send({
-      sucess: false,
+    res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
+      [CONSTANTS.success]: false,
       message: Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
       error,
     });
@@ -45,8 +46,8 @@ const userLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(404).send({
-        sucess: false,
+      return res.status(Codes.BAD_REQUEST_400).send({
+        [CONSTANTS.success]: false,
         message: Messages.INVALID_EMAIL_AND_PASSWORD,
       });
     }
@@ -54,15 +55,15 @@ const userLogin = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).send({
-        sucess: false,
+      return res.status(Codes.NOT_FOUND_404).send({
+        [CONSTANTS.success]: false,
         message: Messages.EMAIL_NOT_REGISTERED,
       });
     }
     const passMatch = await authUtils.comparePassword(password, user.password);
     if (!passMatch) {
       return res.status(200).send({
-        sucess: false,
+        [CONSTANTS.success]: false,
         message: Messages.INVALID_PASSWORD,
       });
     }
@@ -73,7 +74,7 @@ const userLogin = async (req, res) => {
     });
 
     return res.status(200).send({
-      sucess: true,
+      [CONSTANTS.success]: true,
       message: Messages.MESSAGE_LOGIN_SUCCESSFULLY,
       user,
       token,
@@ -81,7 +82,7 @@ const userLogin = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
-      sucess: false,
+      [CONSTANTS.success]: false,
       message: Messages.INTERNAL_SERVER_ERROR_LOGIN,
       error,
     });
