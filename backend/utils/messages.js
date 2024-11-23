@@ -10,6 +10,8 @@ const messages = {
   USER_REGISTERED_SUCCESSFULLY: "User registered successfully",
   EMAIL_NOT_REGISTERED: "Email is not registered",
   INTERNAL_SERVER_ERROR_LOGIN: "Internal server Error at login",
+  INTERNAL_SERVER_ERROR_USER_REGISTERATION:
+    "Internal server error at user registeration",
 };
 
 export default messages;

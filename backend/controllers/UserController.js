@@ -34,7 +34,7 @@ const userRegister = async (req, res) => {
     console.log(error);
     res.status(500).send({
       sucess: false,
-      message: "Error in Registration",
+      message: Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
       error,
     });
   }
