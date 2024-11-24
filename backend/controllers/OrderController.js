@@ -1,18 +1,11 @@
-import Order from "../models/Order.js";
+import orderService from "../services/OrderService.js";
 
 const submitOrder = async (req, res) => {
-  return res.status(200).send({
-    sucess: true,
-  });
+  return await orderService.submitOrder(req, res);
 };
 
 const getAllOrders = async (req, res) => {
-  const order = await Order.find({});
-
-  return res.status(200).send({
-    sucess: true,
-    order,
-  });
+  return await orderService.getAllOrders(req, res);
 };
 
 export default { submitOrder, getAllOrders };
