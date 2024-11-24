@@ -4,7 +4,7 @@ import JWT from "jsonwebtoken";
 import Messages from "../utils/messages.js";
 import Codes from "../utils/Codes.js";
 import CONSTANTS from "../utils/constants.js";
-import apiResponse from "../response/ApiResponse.js";
+import { apiResponse } from "../response/ApiResponse.js";
 
 const userRegister = async (req, res) => {
   try {
@@ -32,11 +32,15 @@ const userRegister = async (req, res) => {
     );
   } catch (error) {
     console.log(error);
-    res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
-      [CONSTANTS.success]: false,
-      [CONSTANTS.message]: Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
-      error,
-    });
+
+    return apiResponse(
+      res,
+      Codes.INTERNAL_SERVER_ERROR_500,
+      false,
+      Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
+      error.message,
+      error.stack
+    );
   }
 };
 
@@ -45,26 +49,27 @@ const userLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(Codes.BAD_REQUEST_400).send({
-        [CONSTANTS.success]: false,
-        [CONSTANTS.message]: Messages.INVALID_EMAIL_AND_PASSWORD,
-      });
+      return apiResponse(
+        res,
+        Codes.BAD_REQUEST_400,
+        false,
+        Messages.INVALID_EMAIL_AND_PASSWORD
+      );
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(Codes.NOT_FOUND_404).send({
-        [CONSTANTS.success]: false,
-        [CONSTANTS.message]: Messages.EMAIL_NOT_REGISTERED,
-      });
+      return apiResponse(
+        res,
+        Codes.NOT_FOUND_404,
+        false,
+        Messages.EMAIL_NOT_REGISTERED
+      );
     }
     const passMatch = await authUtils.comparePassword(password, user.password);
     if (!passMatch) {
-      return res.status(200).send({
-        [CONSTANTS.success]: false,
-        [CONSTANTS.message]: Messages.INVALID_PASSWORD,
-      });
+      return apiResponse(res, Codes.OK_200, false, Messages.INVALID_PASSWORD);
     }
 
     //
@@ -80,11 +85,15 @@ const userLogin = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
-      [CONSTANTS.success]: false,
-      [CONSTANTS.message]: Messages.INTERNAL_SERVER_ERROR_LOGIN,
-      error,
-    });
+
+    return apiResponse(
+      res,
+      Codes.INTERNAL_SERVER_ERROR_500,
+      false,
+      Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
+      error.message,
+      error.stack
+    );
   }
 };
 

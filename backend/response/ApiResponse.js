@@ -1,10 +1,19 @@
 import CONSTANTS from "../utils/constants.js";
 
-const apiResponse = (res, statusCode, operationStatus, message) => {
-  return res.status(statusCode).send({
+export const apiResponse = (
+  res,
+  statusCode,
+  operationStatus,
+  message,
+  errorMessage,
+  errorStack
+) => {
+  const response = {
     [CONSTANTS.success]: operationStatus,
     [CONSTANTS.message]: message,
-  });
-};
+    [CONSTANTS.errorMessage]: errorMessage,
+    [CONSTANTS.errorStack]: errorStack,
+  };
 
-export default apiResponse;
+  return res.status(statusCode).send({ response });
+};

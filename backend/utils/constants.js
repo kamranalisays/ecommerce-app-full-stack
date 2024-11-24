@@ -1,7 +1,8 @@
 const CONSTANTS = {
   message: "message",
   success: "success",
-  error: "error",
+  errorMessage: "errorMessage",
+  errorStack: "errorStack",
 };
 
 export default CONSTANTS;
