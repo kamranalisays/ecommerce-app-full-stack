@@ -4,6 +4,7 @@ import JWT from "jsonwebtoken";
 import Messages from "../utils/messages.js";
 import Codes from "../utils/Codes.js";
 import CONSTANTS from "../utils/constants.js";
+import apiResponse from "../response/ApiResponse.js";
 
 const userRegister = async (req, res) => {
   try {
@@ -11,10 +12,7 @@ const userRegister = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(Codes.OK_200).send({
-        [CONSTANTS.success]: false,
-        message: Messages.USER_ALREAD_EXISTS,
-      });
+      return apiResponse(res, Codes.OK_200, false, Messages.USER_ALREAD_EXISTS);
     }
     const hashedPassword = await authUtils.hashPassword(password);
 
@@ -26,16 +24,17 @@ const userRegister = async (req, res) => {
       address,
     }).save();
 
-    res.status(Codes.CREATED_201).send({
-      [CONSTANTS.success]: true,
-      message: Messages.USER_REGISTERED_SUCCESSFULLY,
-      user,
-    });
+    return apiResponse(
+      res,
+      Codes.CREATED_201,
+      true,
+      Messages.USER_REGISTERED_SUCCESSFULLY
+    );
   } catch (error) {
     console.log(error);
     res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
       [CONSTANTS.success]: false,
-      message: Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
+      [CONSTANTS.message]: Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
       error,
     });
   }
@@ -48,7 +47,7 @@ const userLogin = async (req, res) => {
     if (!email || !password) {
       return res.status(Codes.BAD_REQUEST_400).send({
         [CONSTANTS.success]: false,
-        message: Messages.INVALID_EMAIL_AND_PASSWORD,
+        [CONSTANTS.message]: Messages.INVALID_EMAIL_AND_PASSWORD,
       });
     }
 
@@ -57,14 +56,14 @@ const userLogin = async (req, res) => {
     if (!user) {
       return res.status(Codes.NOT_FOUND_404).send({
         [CONSTANTS.success]: false,
-        message: Messages.EMAIL_NOT_REGISTERED,
+        [CONSTANTS.message]: Messages.EMAIL_NOT_REGISTERED,
       });
     }
     const passMatch = await authUtils.comparePassword(password, user.password);
     if (!passMatch) {
       return res.status(200).send({
         [CONSTANTS.success]: false,
-        message: Messages.INVALID_PASSWORD,
+        [CONSTANTS.message]: Messages.INVALID_PASSWORD,
       });
     }
 
@@ -75,7 +74,7 @@ const userLogin = async (req, res) => {
 
     return res.status(200).send({
       [CONSTANTS.success]: true,
-      message: Messages.MESSAGE_LOGIN_SUCCESSFULLY,
+      [CONSTANTS.message]: Messages.MESSAGE_LOGIN_SUCCESSFULLY,
       user,
       token,
     });
@@ -83,7 +82,7 @@ const userLogin = async (req, res) => {
     console.log(error);
     res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
       [CONSTANTS.success]: false,
-      message: Messages.INTERNAL_SERVER_ERROR_LOGIN,
+      [CONSTANTS.message]: Messages.INTERNAL_SERVER_ERROR_LOGIN,
       error,
     });
   }
