@@ -1,6 +1,9 @@
 import JWT from "jsonwebtoken";
+import Codes from "../utils/Codes.js";
+import CONSTANTS from "../utils/constants.js";
+import messages from "../utils/messages.js";
 
-const requireLoggedIn = (req, res, next) => {
+const requireLoggedIn = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
 
@@ -15,7 +18,7 @@ const requireLoggedIn = (req, res, next) => {
       });
     }
 
-    const token_decode = JWT.verify(
+    const token_decode = await JWT.verify(
       req.headers.authorization,
       process.env.JWT_SECRET
     );
@@ -23,11 +26,25 @@ const requireLoggedIn = (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    res.status(500).send({
-      sucess: false,
-      error: "Unauthorized Access",
-      message: "Invalid or expired token",
-    });
+
+    if (error instanceof JWT.TokenExpiredError) {
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: "Token has expired!",
+      });
+    } else if (error instanceof JWT.JsonWebTokenError) {
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: "Invalid token!",
+      });
+    } else {
+      return res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: messages.INTERNAL_SERVER_ERROR_USER_AUTHENTICATION,
+        [CONSTANTS.errorMessage]: error.message,
+        [CONSTANTS.errorStack]: error.stack,
+      });
+    }
   }
 };
 

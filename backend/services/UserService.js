@@ -4,7 +4,6 @@ import JWT from "jsonwebtoken";
 import Messages from "../utils/messages.js";
 import Codes from "../utils/Codes.js";
 import CONSTANTS from "../utils/constants.js";
-import { apiResponse } from "../response/ApiResponse.js";
 
 const userRegister = async (req, res) => {
   try {
@@ -12,7 +11,10 @@ const userRegister = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return apiResponse(res, Codes.OK_200, false, Messages.USER_ALREAD_EXISTS);
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: Messages.USER_ALREADY_EXISTS,
+      });
     }
     const hashedPassword = await authUtils.hashPassword(password);
 
@@ -24,23 +26,19 @@ const userRegister = async (req, res) => {
       address,
     }).save();
 
-    return apiResponse(
-      res,
-      Codes.CREATED_201,
-      true,
-      Messages.USER_REGISTERED_SUCCESSFULLY
-    );
+    return res.status(Codes.OK_200).send({
+      [CONSTANTS.success]: true,
+      [CONSTANTS.message]: Messages.USER_REGISTERED_SUCCESSFULLY,
+    });
   } catch (error) {
     console.log(error);
 
-    return apiResponse(
-      res,
-      Codes.INTERNAL_SERVER_ERROR_500,
-      false,
-      Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
-      error.message,
-      error.stack
-    );
+    return res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
+      [CONSTANTS.success]: false,
+      [CONSTANTS.message]: Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
+      [CONSTANTS.errorMessage]: error.message,
+      [CONSTANTS.errorStack]: error.stack,
+    });
   }
 };
 
@@ -49,27 +47,26 @@ const userLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return apiResponse(
-        res,
-        Codes.BAD_REQUEST_400,
-        false,
-        Messages.INVALID_EMAIL_AND_PASSWORD
-      );
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: Messages.INVALID_EMAIL_AND_PASSWORD,
+      });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return apiResponse(
-        res,
-        Codes.NOT_FOUND_404,
-        false,
-        Messages.EMAIL_NOT_REGISTERED
-      );
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: Messages.EMAIL_NOT_REGISTERED,
+      });
     }
     const passMatch = await authUtils.comparePassword(password, user.password);
     if (!passMatch) {
-      return apiResponse(res, Codes.OK_200, false, Messages.INVALID_PASSWORD);
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: Messages.INVALID_PASSWORD,
+      });
     }
 
     //
@@ -79,21 +76,19 @@ const userLogin = async (req, res) => {
 
     return res.status(200).send({
       [CONSTANTS.success]: true,
-      [CONSTANTS.message]: Messages.MESSAGE_LOGIN_SUCCESSFULLY,
+      [CONSTANTS.message]: Messages.LOGIN_SUCCESSFULLY,
       user,
       token,
     });
   } catch (error) {
     console.log(error);
 
-    return apiResponse(
-      res,
-      Codes.INTERNAL_SERVER_ERROR_500,
-      false,
-      Messages.INTERNAL_SERVER_ERROR_USER_REGISTERATION,
-      error.message,
-      error.stack
-    );
+    return res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
+      [CONSTANTS.success]: false,
+      [CONSTANTS.message]: Messages.INTERNAL_SERVER_ERROR_USER_LOGIN,
+      [CONSTANTS.errorMessage]: error.message,
+      [CONSTANTS.errorStack]: error.stack,
+    });
   }
 };
 
