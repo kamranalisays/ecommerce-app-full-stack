@@ -22,6 +22,11 @@ const messages = {
   SUCCESSFUL: "Successful",
   INTERNAL_SERVER_ERROR_GET_ALL_PRODUCTS:
     "Internal server error during get all products",
+  UNAUTHORIZED_ACCESS_LOGIN_REQUIRED:
+    "Unauthorized access. Please log in to continue.",
+  TOKEN_HAS_EXPIRED: "Token has expired.",
+  INVALID_TOKEN: "Invalid token.",
+  NAME_CANNOT_BE_EMPTY: "Name field cannot be empty.",
 };
 
 export default messages;

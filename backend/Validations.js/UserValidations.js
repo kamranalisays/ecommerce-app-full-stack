@@ -5,6 +5,8 @@ const userRegisterValidator = (req, res, next) => {
 
   if (name == null) {
     return res.send({ error: messages.NAME_REQUIRED });
+  } else if (name.trim() === "") {
+    return res.send({ error: messages.NAME_CANNOT_BE_EMPTY });
   }
   if (email == null) {
     return res.send({ error: messages.EMAIL_REQUIRED });

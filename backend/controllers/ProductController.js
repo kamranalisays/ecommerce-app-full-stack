@@ -1,8 +1,11 @@
 import productService from "../services/ProductService.js";
+import Codes from "../utils/Codes.js";
+import CONSTANTS from "../utils/constants.js";
+import messages from "../utils/messages.js";
 
-const getAllOrders = async (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
-    const result = await productService.getAllOrders(req, res);
+    const result = await productService.getAllProducts(req, res);
     return result;
   } catch (error) {
     return res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
@@ -14,4 +17,4 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-export default { submitOrder, getAllOrders };
+export default { getAllProducts };

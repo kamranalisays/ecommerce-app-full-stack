@@ -8,13 +8,9 @@ const requireLoggedIn = async (req, res, next) => {
     const token = req.headers.authorization;
 
     if (!token) {
-      // Redirect to login page if no token is found
-      // return res.redirect("/login");
-
-      res.status(401).send({
-        sucess: false,
-        error: "Unauthorized Access",
-        message: "Please login to access this page",
+      return res.status(Codes.OK_200).send({
+        [CONSTANTS.success]: false,
+        [CONSTANTS.message]: messages.UNAUTHORIZED_ACCESS_LOGIN_REQUIRED,
       });
     }
 
@@ -30,12 +26,12 @@ const requireLoggedIn = async (req, res, next) => {
     if (error instanceof JWT.TokenExpiredError) {
       return res.status(Codes.OK_200).send({
         [CONSTANTS.success]: false,
-        [CONSTANTS.message]: "Token has expired!",
+        [CONSTANTS.message]: messages.TOKEN_HAS_EXPIRED,
       });
     } else if (error instanceof JWT.JsonWebTokenError) {
       return res.status(Codes.OK_200).send({
         [CONSTANTS.success]: false,
-        [CONSTANTS.message]: "Invalid token!",
+        [CONSTANTS.message]: messages.INVALID_TOKEN,
       });
     } else {
       return res.status(Codes.INTERNAL_SERVER_ERROR_500).send({
