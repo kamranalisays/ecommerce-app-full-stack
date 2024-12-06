@@ -5,6 +5,14 @@
 
 install node js
 
+# Tech Stack - Backend
+1) ExpressJS
+2) React
+3) NodeJS
+4) MongoDB
+
+
+
 # Backend
 
 1. npm init -y
